@@ -10,7 +10,7 @@ class ApodBloc extends Bloc<ApodEvent, ApodState> {
     on<FetchApodEvent>((event, emit) async {
       emit(ApodLoading());
       try {
-        final apod = await apodRepository.fetchApod();
+        final apod = await apodRepository.fetchAPOD();
         emit(ApodLoaded(
           imageUrl: apod['url'],
           title: apod['title'],

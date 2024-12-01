@@ -14,7 +14,6 @@ class MarsRoverRepository {
     final url = Uri.parse(
       'https://api.nasa.gov/mars-photos/api/v1/rovers/$rover/photos?sol=$sol&camera=$camera&api_key=$apiKey',
     );
-    print("========$url");
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

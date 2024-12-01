@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nasa/database/cache_database.dart';
 import 'package:nasa/database/favorites_database.dart';
 import 'package:nasa/feature/earth/Presentation/earth_imagery_screen.dart';
 import 'package:nasa/feature/earth/bloc/earth_imagery_bloc.dart';
@@ -22,7 +23,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final apodRepository = ApodRepository(apiKey: 'FmM01gHtO0X5X16fPRYMhAzBf7DmEFpxFnjs4R9G');
+    final apodRepository = ApodRepository(apiKey: 'FmM01gHtO0X5X16fPRYMhAzBf7DmEFpxFnjs4R9G',cacheDatabase: CacheDatabase.instance);
     final marsRoverRepository = MarsRoverRepository(apiKey: 'FmM01gHtO0X5X16fPRYMhAzBf7DmEFpxFnjs4R9G');
     final earthRoverRepository = EarthImageryRepository(apiKey: 'FmM01gHtO0X5X16fPRYMhAzBf7DmEFpxFnjs4R9G');
     final favoritesDatabase = FavoritesDatabase.instance;
