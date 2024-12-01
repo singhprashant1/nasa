@@ -20,26 +20,41 @@ class _EarthImageryScreenState extends State<EarthImageryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Earth Imagery')),
+      appBar: AppBar(
+        title: Text(
+          'Earth Imagery',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.deepPurple,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch, // Ensure elements are stretched
           children: [
-            TextField(
+            // Latitude Input
+            _buildTextField(
               controller: _latitudeController,
-              decoration: InputDecoration(labelText: 'Latitude'),
+              label: 'Latitude',
               keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
-            TextField(
+            SizedBox(height: 12),
+
+            // Longitude Input
+            _buildTextField(
               controller: _longitudeController,
-              decoration: InputDecoration(labelText: 'Longitude'),
+              label: 'Longitude',
               keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
+            SizedBox(height: 16),
+
+            // Date Picker
             Row(
               children: [
                 Expanded(
                   child: Text(
                     'Selected Date: ${_selectedDate.toLocal().toIso8601String().split('T')[0]}',
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
                 TextButton(
@@ -56,12 +71,16 @@ class _EarthImageryScreenState extends State<EarthImageryScreen> {
                       });
                     }
                   },
-                  child: Text('Select Date'),
+                  child: Text(
+                    'Select Date',
+                    style: TextStyle(color: Colors.deepPurple, fontSize: 16),
+                  ),
                 ),
               ],
             ),
-
             SizedBox(height: 16),
+
+            // Fetch Imagery Button
             ElevatedButton(
               onPressed: () {
                 final latitude = double.tryParse(_latitudeController.text);
@@ -77,9 +96,19 @@ class _EarthImageryScreenState extends State<EarthImageryScreen> {
                   );
                 }
               },
-              child: Text('Fetch Imagery'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text(
+                'Fetch Imagery',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
+              ),
             ),
             SizedBox(height: 16),
+
+            // Earth Imagery Display
             Expanded(
               child: BlocBuilder<EarthImageryBloc, EarthImageryState>(
                 builder: (context, state) {
@@ -123,9 +152,10 @@ class _EarthImageryScreenState extends State<EarthImageryScreen> {
                                   ),
                                 );
                               },
-                              child: Icon(Icons.favorite_border,
+                              child: Icon(
+                                Icons.favorite_border,
                                 color: Colors.redAccent,
-                                size: 30,
+                                size: 32,
                               ),
                             ),
                           ),
@@ -142,6 +172,31 @@ class _EarthImageryScreenState extends State<EarthImageryScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Reusable TextField Widget for input fields
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required TextInputType keyboardType,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+      ),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.deepPurple, fontSize: 16),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        ),
+        keyboardType: keyboardType,
       ),
     );
   }
