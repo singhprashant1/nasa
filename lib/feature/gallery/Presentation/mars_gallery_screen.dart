@@ -33,40 +33,55 @@ class _MarsGalleryScreenState extends State<MarsGalleryScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
-                _buildDropdown(
-                  selectedValue: selectedRover,
-                  items: ['Curiosity', 'Opportunity', 'Spirit'],
-                  onChanged: (value) => setState(() => selectedRover = value!),
+                // First Row with Dropdowns and Sol Input
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildDropdown(
+                      selectedValue: selectedRover,
+                      items: ['Curiosity', 'Opportunity', 'Spirit'],
+                      onChanged: (value) => setState(() => selectedRover = value!),
+                    ),
+                    _buildDropdown(
+                      selectedValue: selectedCamera,
+                      items: ['FHAZ', 'RHAZ', 'MAST'],
+                      onChanged: (value) => setState(() => selectedCamera = value!),
+                    ),
+                  ],
                 ),
-                _buildDropdown(
-                  selectedValue: selectedCamera,
-                  items: ['FHAZ', 'RHAZ', 'MAST'],
-                  onChanged: (value) => setState(() => selectedCamera = value!),
-                ),
-                _buildSolInput(),
-                ElevatedButton(
-                  onPressed: () {
-                    context.read<MarsRoverBloc>().add(
-                      FetchMarsPhotosEvent(
-                        rover: selectedRover,
-                        camera: selectedCamera,
-                        sol: selectedSol,
+                SizedBox(height: 16), // Space between rows
+                // Second Row with Sol Input and Filter Button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildSolInput(),
+                    SizedBox(width: 16), // Add gap between the input and the button
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<MarsRoverBloc>().add(
+                          FetchMarsPhotosEvent(
+                            rover: selectedRover,
+                            camera: selectedCamera,
+                            sol: selectedSol,
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepOrange, // Consistent color theme
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepOrange, // Consistent color theme
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: Text('Filter', style: TextStyle(fontSize: 16)),
-                ),
+                      child: Text('Filter', style: TextStyle(fontSize: 16,color: Colors.white)),
+                    ),
+                  ],
+                )
+
               ],
             ),
+
             SizedBox(height: 16),
             Expanded(
               child: BlocBuilder<MarsRoverBloc, MarsRoverState>(
